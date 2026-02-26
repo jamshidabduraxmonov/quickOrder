@@ -1,5 +1,7 @@
 [
     {"id": "73314", "name": "Turkey Club", "price": 8.5},
-    {"id": "82210", "name": "Veggie", "price": 7.0}
+    {"id": "82210", "name": "Veggie", "price": 7.0},
+    {"id": "73324", "name": "Chicken Quasadillas", "price": 12.0}
+
 
 ]

@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-
+import data from './products.json';
 
 function ProductCard({ name, onAdd, price }) {
 
@@ -30,11 +30,7 @@ function ProductCard({ name, onAdd, price }) {
 export default function MainMenu() {
 
   const [ total, setTotal ] = useState(0);
-  const sandwiches = [
-    {name: "Turkey Club", price: 5 },
-    {name: "Ham Sandwich", price: 6 },
-    {name: "Turkey Croissant", price: 7 }
-  ];
+  const sandwiches = data;
 
   function addToTotal(price) {
     setTotal(total + price);
