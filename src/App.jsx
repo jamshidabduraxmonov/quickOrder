@@ -63,10 +63,14 @@ export default function MainMenu() {
   return(
 
     <>
-      {sandwiches.map( (sandwich) => (
-    <ProductCard name={sandwich.name} price={sandwich.price} key={sandwich.name} onAdd={addToTotal} onRemove={removeFromTotal} />
-    
-    ))}
+
+    <div className="product-grid">
+        {sandwiches.map( (sandwich) => (
+          <ProductCard className="product-card" name={sandwich.name} price={sandwich.price} key={sandwich.name} onAdd={addToTotal} onRemove={removeFromTotal} />
+          
+          ))}
+    </div>
+      
 
   {total > 0 && <button className="orderBtn" >Order({itemCount}) - ${total}</button>}
 
