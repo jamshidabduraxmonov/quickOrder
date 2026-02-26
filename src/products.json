@@ -1,7 +1,32 @@
 [
     {"id": "73314", "name": "Turkey Club", "price": 8.5},
     {"id": "82210", "name": "Veggie", "price": 7.0},
-    {"id": "73324", "name": "Chicken Quasadillas", "price": 12.0}
-
-
+    {"id": "73324", "name": "Chicken Quesadillas", "price": 12.0},
+    {"id": "90111", "name": "BBQ Chicken Sandwich", "price": 9.5},
+    {"id": "90112", "name": "Grilled Cheese", "price": 6.5},
+    {"id": "90113", "name": "Ham & Cheese Panini", "price": 8.0},
+    {"id": "90114", "name": "Caesar Salad", "price": 7.5},
+    {"id": "90115", "name": "Greek Salad", "price": 8.0},
+    {"id": "90116", "name": "Beef Burger", "price": 11.0},
+    {"id": "90117", "name": "Cheeseburger Deluxe", "price": 12.5},
+    {"id": "90118", "name": "Spicy Chicken Wrap", "price": 9.0},
+    {"id": "90119", "name": "Tuna Melt", "price": 8.5},
+    {"id": "90120", "name": "Margherita Pizza", "price": 10.0},
+    {"id": "90121", "name": "Pepperoni Pizza", "price": 11.5},
+    {"id": "90122", "name": "Hawaiian Pizza", "price": 11.0},
+    {"id": "90123", "name": "Pasta Alfredo", "price": 13.0},
+    {"id": "90124", "name": "Spaghetti Bolognese", "price": 14.0},
+    {"id": "90125", "name": "Chicken Tenders", "price": 9.5},
+    {"id": "90126", "name": "Fish & Chips", "price": 13.5},
+    {"id": "90127", "name": "Steak Sandwich", "price": 14.5},
+    {"id": "90128", "name": "Loaded Nachos", "price": 10.5},
+    {"id": "90129", "name": "Shrimp Tacos", "price": 12.5},
+    {"id": "90130", "name": "Beef Tacos", "price": 11.0},
+    {"id": "90131", "name": "Chicken Burrito", "price": 10.0},
+    {"id": "90132", "name": "Veggie Burrito", "price": 9.0},
+    {"id": "90133", "name": "Clam Chowder", "price": 7.5},
+    {"id": "90134", "name": "Tomato Soup", "price": 6.0},
+    {"id": "90135", "name": "Breakfast Omelette", "price": 8.5},
+    {"id": "90136", "name": "Pancake Stack", "price": 7.5},
+    {"id": "90137", "name": "French Toast", "price": 7.0}
 ]

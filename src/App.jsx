@@ -30,14 +30,16 @@ function ProductCard({ name, onAdd, price }) {
 export default function MainMenu() {
 
   const [ total, setTotal ] = useState(0);
+  const [ itemCount, setItemCount] = useState(0);
   const sandwiches = data;
 
   function addToTotal(price) {
     setTotal(total + price);
+    setItemCount(itemCount + 1);
   }
 
  useEffect( () => {
-  console.log(`Total: ${total}$`);
+  console.log(`Total: ${total}$ - ${itemCount} products`);
 }, [total]);
     
   
@@ -51,7 +53,7 @@ export default function MainMenu() {
     
     ))}
 
-  {total > 0 && <button>Order Now!</button>}
+  {total > 0 && <button className="orderBtn" >Order ({itemCount}) - ${total}</button>}
 
   </>
 
