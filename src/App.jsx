@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import data from './products.json';
 
-function ProductCard({ name, onAdd, price }) {
+function ProductCard({ name, onAdd, price, onRemove }) {
 
   const [ count, setCount ] = useState(0);
 
@@ -12,6 +12,15 @@ function ProductCard({ name, onAdd, price }) {
     return count;
   }
 
+  function takeDown() {
+    if(count > 0){
+      setCount(count -1);
+      onRemove(price);
+      return count;
+    }
+    
+  }
+
   return(
     <>
     
@@ -19,6 +28,7 @@ function ProductCard({ name, onAdd, price }) {
       <h3>{count}</h3>
       <h4>{price}</h4>
       <button onClick={() => addUp()}>+</button>
+      <button onClick={() => takeDown()}>-</button>
     </>
   )
 
@@ -38,6 +48,11 @@ export default function MainMenu() {
     setItemCount(itemCount + 1);
   }
 
+  function removeFromTotal(price){
+    setTotal(total - price);
+    setItemCount(itemCount - 1);
+  }
+
  useEffect( () => {
   console.log(`Total: ${total}$ - ${itemCount} products`);
 }, [total]);
@@ -49,11 +64,11 @@ export default function MainMenu() {
 
     <>
       {sandwiches.map( (sandwich) => (
-    <ProductCard name={sandwich.name} price={sandwich.price} key={sandwich.name} onAdd={addToTotal} />
+    <ProductCard name={sandwich.name} price={sandwich.price} key={sandwich.name} onAdd={addToTotal} onRemove={removeFromTotal} />
     
     ))}
 
-  {total > 0 && <button className="orderBtn" >Order ({itemCount}) - ${total}</button>}
+  {total > 0 && <button className="orderBtn" >Order({itemCount}) - ${total}</button>}
 
   </>
 
