@@ -25,3 +25,9 @@
   align-items: center; /* Centers the name, price, and buttons */
   text-align: center;
 }
+
+
+img {
+  height: 150px;
+  object-fit: cover;
+}

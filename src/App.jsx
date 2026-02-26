@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import data from './products.json';
 
-function ProductCard({ name, onAdd, price, onRemove }) {
+function ProductCard({ name, onAdd, price, onRemove, image }) {
 
   const [ count, setCount ] = useState(0);
 
@@ -23,7 +23,7 @@ function ProductCard({ name, onAdd, price, onRemove }) {
 
   return(
     <>
-    
+      <img src={image} alt={name} />
       <div>{name}</div>
       <h3>{count}</h3>
       <h4>{price}</h4>
@@ -66,7 +66,7 @@ export default function MainMenu() {
 
     <div className="product-grid">
         {sandwiches.map( (sandwich) => (
-          <ProductCard className="product-card" name={sandwich.name} price={sandwich.price} key={sandwich.name} onAdd={addToTotal} onRemove={removeFromTotal} />
+          <ProductCard className="product-card" name={sandwich.name} price={sandwich.price} key={sandwich.name} onAdd={addToTotal} onRemove={removeFromTotal} image={sandwich.image}/>
           
           ))}
     </div>
