@@ -10,7 +10,6 @@
 
 .product-grid {
   display: grid;
-  /* This creates as many 250px columns as will fit on the screen! */
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   padding: 20px;
@@ -22,8 +21,15 @@
   padding: 15px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centers the name, price, and buttons */
+  align-items: center; 
   text-align: center;
+  /* Let's make the ProductCard feel alive */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 
@@ -31,3 +37,5 @@ img {
   height: 150px;
   object-fit: cover;
 }
+
+

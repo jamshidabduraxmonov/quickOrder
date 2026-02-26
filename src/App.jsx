@@ -22,14 +22,14 @@ function ProductCard({ name, onAdd, price, onRemove, image }) {
   }
 
   return(
-    <>
+    <div className="product-card">
       <img src={image} alt={name} />
       <div>{name}</div>
       <h3>{count}</h3>
       <h4>{price}</h4>
       <button onClick={() => addUp()}>+</button>
       <button onClick={() => takeDown()}>-</button>
-    </>
+    </div>
   )
 
 }
@@ -66,7 +66,13 @@ export default function MainMenu() {
 
     <div className="product-grid">
         {sandwiches.map( (sandwich) => (
-          <ProductCard className="product-card" name={sandwich.name} price={sandwich.price} key={sandwich.name} onAdd={addToTotal} onRemove={removeFromTotal} image={sandwich.image}/>
+          <ProductCard 
+          name={sandwich.name} 
+          price={sandwich.price} 
+          key={sandwich.name} 
+          onAdd={addToTotal} 
+          onRemove={removeFromTotal} 
+          image={sandwich.image}/>
           
           ))}
     </div>
