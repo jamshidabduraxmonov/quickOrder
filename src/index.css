@@ -7,6 +7,14 @@
     background-color: black;
 }
 
+.clearBtn {
+  position: fixed;
+  bottom: 20px;
+  left: 70%;
+  transform: translateX(-50%);
+  color: white;
+  background-color: black;
+}
 
 .product-grid {
   display: grid;

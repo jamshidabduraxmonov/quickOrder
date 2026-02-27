@@ -78,7 +78,16 @@ export default function MainMenu() {
     </div>
       
 
-  {total > 0 && <button className="orderBtn" >Order({itemCount}) - ${total}</button>}
+  {total > 0 && 
+    <div>
+      <button className="orderBtn" >
+        Order({itemCount}) - ${total}
+      </button>
+      <button className="clearBtn" onClick={() => window.location.reload()}>
+        Clear All
+      </button>
+    </div>
+  }
 
   </>
 
