@@ -44,6 +44,8 @@ export default function MainMenu() {
 
   const [ cartContents, setCartContents ] = useState({});
 
+  const [ isPopupOpen, setIsPopupOpen ] = useState(false); 
+
   function addToTotal(price, code) {
     setTotal(total + price);
     setItemCount(itemCount + 1);
@@ -73,8 +75,9 @@ export default function MainMenu() {
       setCartContents(tempContent);
 
     }else {
-      delete cartContents[code];
-      setCartContents(cartContents);
+      let temp = {...cartContents}
+      delete temp[code];
+      setCartContents(temp);
     }
   } 
 
@@ -86,6 +89,10 @@ export default function MainMenu() {
 useEffect( () => {
   console.log('The Product code: ', cartContents)
 }, [cartContents]);
+
+useEffect( () => {
+  console.log("Order Button: ", isPopupOpen);
+}, [isPopupOpen]);
     
   
 
@@ -112,13 +119,21 @@ useEffect( () => {
 
   {total > 0 && 
     <div>
-      <button className="orderBtn" >
+      <button className="orderBtn" onClick={() => setIsPopupOpen(true)} >
         Order({itemCount}) - ${total}
       </button>
       <button className="clearBtn" onClick={() => window.location.reload()}>
         Clear All
       </button>
     </div>
+  }
+
+  {isPopupOpen === true && 
+      <div>
+        <button onClick={()=> setIsPopupOpen(false)}>x</button>
+        <h3>Show codes to the cashier and proceed to payment</h3>
+
+      </div>
   }
 
   </>
