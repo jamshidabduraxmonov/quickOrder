@@ -136,16 +136,19 @@ useEffect( () => {
   }
 
   {isPopupOpen === true && 
-      <div>
-        <button onClick={()=> setIsPopupOpen(false)}>x</button>
-        <h3>Show codes to the cashier and proceed to payment</h3>
-        {
-          codeKeys.map((codeKey)=> {
-            return (
-              <li key={codeKey}>{codeKey} - {cartContents[codeKey]}</li>
-            )
-          })
-        }
+      <div className="popup">
+        <div className="popup-box">
+            <button onClick={()=> setIsPopupOpen(false)}>x</button>
+            <h3>Show codes to the cashier and proceed to payment</h3>
+            {
+              codeKeys.map((codeKey)=> {
+                return (
+                  <li key={codeKey}>{codeKey} - {cartContents[codeKey]}</li>
+                )
+              })
+            }
+        </div>
+        
       </div>
   }
 
