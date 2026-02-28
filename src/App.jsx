@@ -82,6 +82,13 @@ export default function MainMenu() {
   } 
 
 
+
+  let codeKeys = Object.keys(cartContents);
+   
+
+
+
+
  useEffect( () => {
   console.log(`Total: ${total}$ - ${itemCount} products`);
 }, [total]);
@@ -132,7 +139,13 @@ useEffect( () => {
       <div>
         <button onClick={()=> setIsPopupOpen(false)}>x</button>
         <h3>Show codes to the cashier and proceed to payment</h3>
-
+        {
+          codeKeys.map((codeKey)=> {
+            return (
+              <li>{codeKey}</li>
+            )
+          })
+        }
       </div>
   }
 
