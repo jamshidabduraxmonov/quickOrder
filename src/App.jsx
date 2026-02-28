@@ -142,7 +142,7 @@ useEffect( () => {
         {
           codeKeys.map((codeKey)=> {
             return (
-              <li>{codeKey}</li>
+              <li key={codeKey}>{codeKey} - {cartContents[codeKey]}</li>
             )
           })
         }
