@@ -1,5 +1,7 @@
 import {useState, useEffect} from 'react';
 import data from './products.json';
+import { db } from './firebase.js';
+import {collection, addDoc} from 'firebase/firestore';
 
 function ProductCard({ name, onAdd, price, onRemove, image, code }) {
 
@@ -87,6 +89,23 @@ export default function MainMenu() {
    
 
 
+  const handleOrder = async() => {
+    try{
+      const collectionRef = collection(db, "orders");
+      const newOrder = {
+        items: cartContents,
+        totalPrice: total,
+        status: "pending"
+      };
+      const docRef = await addDoc(collectionRef, newOrder);
+      console.log("Success! Order ID:", docRef.id);
+
+    }catch(errors){
+        console.error(errors);
+        alert("Something went wrong. Please try again or tell the cashier!")
+    }
+}
+
 
 
  useEffect( () => {
@@ -126,7 +145,7 @@ useEffect( () => {
 
   {total > 0 && 
     <div>
-      <button className="orderBtn" onClick={() => setIsPopupOpen(true)} >
+      <button className="orderBtn" onClick={() => setIsPopupOpen(true)}>
         Order({itemCount}) - ${total}
       </button>
       <button className="clearBtn" onClick={() => window.location.reload()}>
