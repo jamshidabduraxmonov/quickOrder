@@ -3,21 +3,21 @@ import data from './products.json';
 import { db } from './firebase.js';
 import {collection, addDoc} from 'firebase/firestore';
 
-function ProductCard({ name, onAdd, price, onRemove, image, code }) {
+function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
 
   const [ count, setCount ] = useState(0);
 
 
   function addUp(){
     setCount(count  + 1);
-    onAdd(price, code);
+    onAdd(price, id);
     return count;
   }
 
   function takeDown() {
     if(count > 0){
       setCount(count -1);
-      onRemove(price, code);
+      onRemove(price, id);
       return count;
     }
     
@@ -62,37 +62,37 @@ export default function MainMenu() {
 
   const [ isConfirmed, setIsConfirmed ] = useState(false);
 
-  function addToTotal(price, code) {
+  function addToTotal(price, id) {
     setTotal(total + price);
     setItemCount(itemCount + 1);
     
     // To get the quantity of this code
-    const currentQty = cartContents[code] || 0;
+    const currentQty = cartContents[id] || 0;
 
     setCartContents({
       ...cartContents,
-      [code]: currentQty + 1
+      [id]: currentQty + 1
     });
   }
 
-  function removeFromTotal(price, code){
+  function removeFromTotal(price, id){
     setTotal(total - price);
     setItemCount(itemCount - 1);
 
-    const currentQty = cartContents[code] || 0;
+    const currentQty = cartContents[id] || 0;
 
     if(currentQty > 1) {
       let tempContent = {...cartContents};
 
       tempContent = {...tempContent, 
-        [code]: currentQty - 1
+        [id]: currentQty - 1
       };
 
       setCartContents(tempContent);
 
     }else {
       let temp = {...cartContents}
-      delete temp[code];
+      delete temp[id];
       setCartContents(temp);
     }
   } 
@@ -150,7 +150,8 @@ useEffect( () => {
           onAdd={addToTotal} 
           onRemove={removeFromTotal} 
           image={sandwich.image}
-          code={sandwich.code}  
+          code={sandwich.code} 
+          id={sandwich.id} 
           />
           
           ))}
