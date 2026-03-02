@@ -197,7 +197,7 @@ useEffect( () => {
             
           ) : ( 
             <>
-              <button onClick={()=> setIsPopupOpen(false)}>x</button>
+              <button onClick={()=> {setIsPopupOpen(false); window.location.reload()}}>x</button>
               <h3>Order Confirmed</h3>
               <p>Show these codes to the cashier:</p>
               {
