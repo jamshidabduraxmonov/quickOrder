@@ -202,8 +202,11 @@ useEffect( () => {
               <p>Show these codes to the cashier:</p>
               {
                 codeKeys.map((codeKey)=> {
+                  const spcProduct = sandwiches.find(item => item.id === codeKey);
+                  const code = spcProduct.code;
+
                   return(
-                    <li key={codeKey}>{codeKey} - {cartContents[codeKey]}</li>
+                    <p key={spcProduct.id}>{code}({cartContents[spcProduct.id]})</p>
                   )
                 })
               }
