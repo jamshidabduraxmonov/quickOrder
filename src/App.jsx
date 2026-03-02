@@ -185,19 +185,19 @@ useEffect( () => {
                   const price = spcProduct.price;
 
                   return(
-                    <p key={name}>{name}({price}) - $ {cartContents[spcProduct.id] * price}</p>
+                    <p key={name}>{name}({cartContents[spcProduct.id]}) - ${price} - ${cartContents[spcProduct.id] * price}</p>
                   )
                 })
               }
 
-              <h3>Total: {total}</h3>
+              <h3>Total: ${total}</h3>
 
               <button onClick={() => { handleOrder(); setIsConfirmed(true)}}>Confirm</button>
             </>
             
           ) : ( 
             <>
-              <button onClick={()=> setIsPopupOpen(false)}>x</button>
+              <button onClick={()=> {setIsPopupOpen(false); window.location.reload()}}>x</button>
               <h3>Order Confirmed</h3>
               <p>Show these codes to the cashier:</p>
               {
