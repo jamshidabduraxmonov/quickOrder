@@ -121,13 +121,10 @@ export default function MainMenu() {
       if(docRef.id) {
         setOrderId(docRef.id);
         setIsConfirmed(true);
-        setIsBusy(false);
       }
     }catch(errors){
         console.error(errors);
         alert("Something went wrong. Please try again or tell the cashier!");
-        setIsBusy(false);
-        
     }finally{
       setIsBusy(false);
     }
@@ -205,7 +202,7 @@ useEffect( () => {
 
               <h3>Total: ${total}</h3>
 
-              <button onClick={() => { handleOrder() }}>Confirm</button>
+              <button onClick={() => { handleOrder() }} disabled={isBusy}>{isBusy ? "Sending..." : "Comfirm"}</button>
             </>
             
           ) : ( 
