@@ -64,6 +64,8 @@ export default function MainMenu() {
 
   const [ isBusy, setIsBusy ] = useState(false);
 
+  const [ orderId, setOrderId] = useState("");
+
   function addToTotal(price, id) {
     setTotal(total + price);
     setItemCount(itemCount + 1);
@@ -117,14 +119,17 @@ export default function MainMenu() {
       const docRef = await addDoc(collectionRef, newOrder);
       console.log("Success! Order ID:", docRef.id);
       if(docRef.id) {
-        setCartContents({...cartContents}, docRef.id);
+        setOrderId(docRef.id);
         setIsConfirmed(true);
         setIsBusy(false);
       }
     }catch(errors){
         console.error(errors);
         alert("Something went wrong. Please try again or tell the cashier!");
+        setIsBusy(false);
         
+    }finally{
+      setIsBusy(false);
     }
 }
 
