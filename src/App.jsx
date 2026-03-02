@@ -3,21 +3,21 @@ import data from './products.json';
 import { db } from './firebase.js';
 import {collection, addDoc} from 'firebase/firestore';
 
-function ProductCard({ name, onAdd, price, onRemove, image, code }) {
+function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
 
   const [ count, setCount ] = useState(0);
 
 
   function addUp(){
     setCount(count  + 1);
-    onAdd(price, code);
+    onAdd(price, id);
     return count;
   }
 
   function takeDown() {
     if(count > 0){
       setCount(count -1);
-      onRemove(price, code);
+      onRemove(price, id);
       return count;
     }
     
@@ -38,6 +38,18 @@ function ProductCard({ name, onAdd, price, onRemove, image, code }) {
 
 
 
+/* To build the confirmation content and switches after 'Confirm' button:
+     1. We need a new state called 'isConfirmed' which is initially false
+     2. 'Confirm button at the end of the popup
+     3. The button sets the 'isConfirmed' to 'true'
+     4. if 'isConfirmed' is false, when order button pressed the popup should
+              should show the list of products and total price
+     5. Else it shows the code of the products.
+
+*/
+
+
+
 export default function MainMenu() {
 
   const [ total, setTotal ] = useState(0);
@@ -48,37 +60,39 @@ export default function MainMenu() {
 
   const [ isPopupOpen, setIsPopupOpen ] = useState(false); 
 
-  function addToTotal(price, code) {
+  const [ isConfirmed, setIsConfirmed ] = useState(false);
+
+  function addToTotal(price, id) {
     setTotal(total + price);
     setItemCount(itemCount + 1);
     
     // To get the quantity of this code
-    const currentQty = cartContents[code] || 0;
+    const currentQty = cartContents[id] || 0;
 
     setCartContents({
       ...cartContents,
-      [code]: currentQty + 1
+      [id]: currentQty + 1
     });
   }
 
-  function removeFromTotal(price, code){
+  function removeFromTotal(price, id){
     setTotal(total - price);
     setItemCount(itemCount - 1);
 
-    const currentQty = cartContents[code] || 0;
+    const currentQty = cartContents[id] || 0;
 
     if(currentQty > 1) {
       let tempContent = {...cartContents};
 
       tempContent = {...tempContent, 
-        [code]: currentQty - 1
+        [id]: currentQty - 1
       };
 
       setCartContents(tempContent);
 
     }else {
       let temp = {...cartContents}
-      delete temp[code];
+      delete temp[id];
       setCartContents(temp);
     }
   } 
@@ -136,7 +150,8 @@ useEffect( () => {
           onAdd={addToTotal} 
           onRemove={removeFromTotal} 
           image={sandwich.image}
-          code={sandwich.code}  
+          code={sandwich.code} 
+          id={sandwich.id} 
           />
           
           ))}
@@ -155,20 +170,55 @@ useEffect( () => {
   }
 
   {isPopupOpen === true && 
+    
       <div className="popup">
         <div className="popup-box">
-            <button onClick={()=> setIsPopupOpen(false)}>x</button>
-            <h3>Show codes to the cashier and proceed to payment</h3>
-            {
-              codeKeys.map((codeKey)=> {
-                return (
-                  <li key={codeKey}>{codeKey} - {cartContents[codeKey]}</li>
-                )
-              })
-            }
+
+          {isConfirmed=== false ? (
+            <>
+              <button onClick={()=> setIsPopupOpen(false)}>x</button>
+              <h3>List of Products</h3>
+              {
+                codeKeys.map((key)=> {
+                  const spcProduct = sandwiches.find((item) => item.id === key);
+                  const name = spcProduct.name;
+                  const price = spcProduct.price;
+
+                  return(
+                    <p key={name}>{name}({price}) - $ {cartContents[spcProduct.id] * price}</p>
+                  )
+                })
+              }
+
+              <h3>Total: {total}</h3>
+
+              <button onClick={() => { handleOrder(); setIsConfirmed(true)}}>Confirm</button>
+            </>
+            
+          ) : ( 
+            <>
+              <button onClick={()=> setIsPopupOpen(false)}>x</button>
+              <h3>Order Confirmed</h3>
+              <p>Show these codes to the cashier:</p>
+              {
+                codeKeys.map((codeKey)=> {
+                  const spcProduct = sandwiches.find(item => item.id === codeKey);
+                  const code = spcProduct.code;
+
+                  return(
+                    <p key={spcProduct.id}>{code}({cartContents[spcProduct.id]})</p>
+                  )
+                })
+              }
+            </>
+          
+          )}
+            
         </div>
         
       </div>
+      
+      
   }
 
   </>
