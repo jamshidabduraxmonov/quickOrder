@@ -62,6 +62,8 @@ export default function MainMenu() {
 
   const [ isConfirmed, setIsConfirmed ] = useState(false);
 
+  const [ isBusy, setIsBusy ] = useState(false);
+
   function addToTotal(price, id) {
     setTotal(total + price);
     setItemCount(itemCount + 1);
@@ -105,6 +107,7 @@ export default function MainMenu() {
 
   const handleOrder = async() => {
     try{
+      setIsBusy(true);
       const collectionRef = collection(db, "orders");
       const newOrder = {
         items: cartContents,
@@ -113,10 +116,15 @@ export default function MainMenu() {
       };
       const docRef = await addDoc(collectionRef, newOrder);
       console.log("Success! Order ID:", docRef.id);
-
+      if(docRef.id) {
+        setCartContents({...cartContents}, docRef.id);
+        setIsConfirmed(true);
+        setIsBusy(false);
+      }
     }catch(errors){
         console.error(errors);
-        alert("Something went wrong. Please try again or tell the cashier!")
+        alert("Something went wrong. Please try again or tell the cashier!");
+        
     }
 }
 
@@ -192,7 +200,7 @@ useEffect( () => {
 
               <h3>Total: ${total}</h3>
 
-              <button onClick={() => { handleOrder(); setIsConfirmed(true)}}>Confirm</button>
+              <button onClick={() => { handleOrder() }}>Confirm</button>
             </>
             
           ) : ( 
