@@ -179,8 +179,18 @@ useEffect( () => {
               <button onClick={()=> setIsPopupOpen(false)}>x</button>
               <h3>List of Products</h3>
               {
-                
+                codeKeys.map((key)=> {
+                  const spcProduct = sandwiches.find((item) => item.id === key);
+                  const name = spcProduct.name;
+                  const price = spcProduct.price;
+
+                  return(
+                    <p key={name}>{name}({price}) - $ {cartContents[spcProduct.id] * price}</p>
+                  )
+                })
               }
+
+              <h3>Total: {total}</h3>
 
               <button onClick={() => { handleOrder(); setIsConfirmed(true)}}>Confirm</button>
             </>
