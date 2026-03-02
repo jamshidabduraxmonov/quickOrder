@@ -185,12 +185,12 @@ useEffect( () => {
                   const price = spcProduct.price;
 
                   return(
-                    <p key={name}>{name}({price}) - $ {cartContents[spcProduct.id] * price}</p>
+                    <p key={name}>{name}({cartContents[spcProduct.id]}) - ${price} - ${cartContents[spcProduct.id] * price}</p>
                   )
                 })
               }
 
-              <h3>Total: {total}</h3>
+              <h3>Total: ${total}</h3>
 
               <button onClick={() => { handleOrder(); setIsConfirmed(true)}}>Confirm</button>
             </>
