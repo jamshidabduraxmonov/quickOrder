@@ -38,6 +38,18 @@ function ProductCard({ name, onAdd, price, onRemove, image, code }) {
 
 
 
+/* To build the confirmation content and switches after 'Confirm' button:
+     1. We need a new state called 'isConfirmed' which is initially false
+     2. 'Confirm button at the end of the popup
+     3. The button sets the 'isConfirmed' to 'true'
+     4. if 'isConfirmed' is false, when order button pressed the popup should
+              should show the list of products and total price
+     5. Else it shows the code of the products.
+
+*/
+
+
+
 export default function MainMenu() {
 
   const [ total, setTotal ] = useState(0);
@@ -47,6 +59,8 @@ export default function MainMenu() {
   const [ cartContents, setCartContents ] = useState({});
 
   const [ isPopupOpen, setIsPopupOpen ] = useState(false); 
+
+  const [ isConfirmed, setIsConfirmed ] = useState(false);
 
   function addToTotal(price, code) {
     setTotal(total + price);
@@ -155,20 +169,42 @@ useEffect( () => {
   }
 
   {isPopupOpen === true && 
+    
       <div className="popup">
         <div className="popup-box">
-            <button onClick={()=> setIsPopupOpen(false)}>x</button>
-            <h3>Show codes to the cashier and proceed to payment</h3>
-            {
-              codeKeys.map((codeKey)=> {
-                return (
-                  <li key={codeKey}>{codeKey} - {cartContents[codeKey]}</li>
-                )
-              })
-            }
+
+          {isConfirmed=== false ? (
+            <>
+              <button onClick={()=> setIsPopupOpen(false)}>x</button>
+              <h3>List of Products</h3>
+              {
+                
+              }
+
+              <button onClick={() => { handleOrder(); setIsConfirmed(true)}}>Confirm</button>
+            </>
+            
+          ) : ( 
+            <>
+              <button onClick={()=> setIsPopupOpen(false)}>x</button>
+              <h3>Order Confirmed</h3>
+              <p>Show these codes to the cashier:</p>
+              {
+                codeKeys.map((codeKey)=> {
+                  return(
+                    <li key={codeKey}>{codeKey} - {cartContents[codeKey]}</li>
+                  )
+                })
+              }
+            </>
+          
+          )}
+            
         </div>
         
       </div>
+      
+      
   }
 
   </>
