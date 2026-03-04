@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import data from './products.json';
 import { db } from './firebase.js';
 import {collection, addDoc} from 'firebase/firestore';
+import StaffDashboard from './StaffDashboard.jsx';
 
 function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
 
@@ -165,6 +166,9 @@ useEffect( () => {
           />
           
           ))}
+
+          <StaffDashboard />
+
     </div>
       
 
