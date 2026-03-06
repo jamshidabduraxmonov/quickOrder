@@ -68,3 +68,20 @@ img {
   max-width: 400px;
   text-align: center;
 }
+
+
+
+.order-card {
+  border: 2px solid #333; /* A clear, dark border */
+  border-radius: 8px;      /* Rounded corners so it looks like a card */
+  padding: 15px;           /* Space inside the card (so text doesn't touch the border) */
+  margin-bottom: 20px;     /* Space between this card and the next one */
+  max-width: 400px;        /* Keeps the cards from being too wide */
+  background-color: #f9f9f9; /* A light background to separate it from the page */
+}
+
+.order-card h2 {
+  margin-top: 0;           /* Removes extra space at the top of the ID */
+  border-bottom: 1px solid #ddd; /* A subtle line separating the ID from the items */
+  padding-bottom: 5px;
+}

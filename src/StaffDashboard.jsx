@@ -18,20 +18,9 @@ const StaffDashboard = () => {
             snapshot.forEach((doc) => {
                 const realData = doc.data();
                 tempOrders.push({id: doc.id, ...realData});
+                setOrders(tempOrders);
              });
 
-
-            tempOrders.forEach((order) => {
-                const ids = Object.keys(order.items);
-                ids.forEach((keyId) => {
-                   const product = data.find(food => food.id == keyId); 
-                   allNames.push(product.name);
-                   setOrderNames(allNames);
-                    }
-                );
-
-                   
-                });
             
             
 
@@ -54,16 +43,29 @@ const StaffDashboard = () => {
         <div>
             <h1>StaffDashboard</h1>
 
+            
             {
-                
-              orderNames.map((name) => {
-                
-                return(
-                    <p>{name}</p>
-                )
-              })
+                orders.map( order =>{
+                    const itemsMap = order.items;
 
-                
+                    const productIds = Object.keys(itemsMap);
+
+                    return (
+                        <div key={order.id} className="order-card">
+                            <h2>Order #{order.id.slice(-3)}</h2>
+                            {
+                                productIds.map(productId => {
+                                    const foundProduct = data.find(product => product.id == productId);
+                                    const quantity = itemsMap[productId]
+                                    return(
+                                        <p key={productId}>{foundProduct.name} x {quantity}</p>
+                                    )
+                                })
+                            }
+                        </div>
+                    )
+                })
+             
             }
         </div>
     );
