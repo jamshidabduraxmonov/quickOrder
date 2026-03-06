@@ -23,8 +23,8 @@ const StaffDashboard = () => {
 
             tempOrders.forEach((order) => {
                 const ids = Object.keys(order.items);
-                ids.forEach((code) => {
-                   const product = data.find(food => food.id == code); 
+                ids.forEach((keyId) => {
+                   const product = data.find(food => food.id == keyId); 
                    allNames.push(product.name);
                    setOrderNames(allNames);
                     }
