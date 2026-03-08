@@ -3,8 +3,10 @@ import data from './products.json';
 import { db } from './firebase.js';
 import {collection, addDoc, serverTimestamp} from 'firebase/firestore';
 import StaffDashboard from './StaffDashboard.jsx';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {Menu} from './Menu.jsx';
 
-function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
+export function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
 
   const [ count, setCount ] = useState(0);
 
@@ -148,27 +150,24 @@ useEffect( () => {
     
   
 
+    return(
 
-  return(
-
-    <>
+  <BrowserRouter>
+  <>
 
     <div className="product-grid">
-        {sandwiches.map( (sandwich) => (
-          <ProductCard 
-          name={sandwich.name} 
-          price={sandwich.price} 
-          key={sandwich.name} 
-          onAdd={addToTotal} 
-          onRemove={removeFromTotal} 
-          image={sandwich.image}
-          code={sandwich.code} 
-          id={sandwich.id} 
-          />
-          
-          ))}
-
+        
+        <Routes>
+          <Route path='/' element={
+            <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} /> 
+          }/>
+        <Route path="/admin" element={
           <StaffDashboard />
+        }/>
+
+          </Routes> 
+        
+
 
     </div>
       
@@ -238,6 +237,12 @@ useEffect( () => {
 
   </>
 
+</BrowserRouter>
+
+
   )
+
+
+
 }
 
