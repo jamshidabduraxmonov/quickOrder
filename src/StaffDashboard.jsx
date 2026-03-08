@@ -61,7 +61,14 @@ const StaffDashboard = () => {
                                         <p key={productId}>{foundProduct.name} x {quantity}</p>
                                     )
                                 })
+
+                                
                             }
+
+                            <footer>{order.createdAt?.toDate().toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) || 'Loading...' }</footer>
                         </div>
                     )
                 })
@@ -72,4 +79,3 @@ const StaffDashboard = () => {
 };
 
 export default StaffDashboard;
-

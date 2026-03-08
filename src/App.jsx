@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import data from './products.json';
 import { db } from './firebase.js';
-import {collection, addDoc} from 'firebase/firestore';
+import {collection, addDoc, serverTimestamp} from 'firebase/firestore';
 import StaffDashboard from './StaffDashboard.jsx';
 
 function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
@@ -115,7 +115,8 @@ export default function MainMenu() {
       const newOrder = {
         items: cartContents,
         totalPrice: total,
-        status: "pending"
+        status: "pending",
+        createdAt: serverTimestamp()
       };
       const docRef = await addDoc(collectionRef, newOrder);
       console.log("Success! Order ID:", docRef.id);
