@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
-import data from './products.json';
 import { db } from './firebase.js';
+import {onSnapshot} from 'firebase/firestore';
+
 import {collection, addDoc, serverTimestamp} from 'firebase/firestore';
 import StaffDashboard from './StaffDashboard.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -57,7 +58,8 @@ export default function MainMenu() {
 
   const [ total, setTotal ] = useState(0);
   const [ itemCount, setItemCount] = useState(0);
-  const sandwiches = data;
+  
+  const [ sandwiches, setSandwiches ] = useState([]);
 
   const [ cartContents, setCartContents ] = useState({});
 
@@ -68,6 +70,19 @@ export default function MainMenu() {
   const [ isBusy, setIsBusy ] = useState(false);
 
   const [ orderId, setOrderId] = useState("");
+
+  const productRef = collection(db, 'products');
+
+  useEffect( () => {
+    onSnapshot(productRef, (snapshot)=> {
+      let tempProducts = [];
+      snapshot.forEach((doc) => {
+        const realData = doc.data();
+        tempProducts.push({id: doc.id, ...realData});
+        setSandwiches(tempProducts);
+      })
+    })
+  }, [])
 
   function addToTotal(price, id) {
     setTotal(total + price);

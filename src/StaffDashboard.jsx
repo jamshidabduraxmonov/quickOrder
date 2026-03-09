@@ -1,4 +1,4 @@
-import {collection, query, onSnapshot, orderBy} from 'firebase/firestore';
+import {collection, query, onSnapshot, orderBy, addDoc} from 'firebase/firestore';
 import {useState, useEffect} from 'react';
 import { db } from './firebase.js';
 import data from './products.json'
@@ -16,22 +16,13 @@ const StaffDashboard = () => {
 
         const unsubscribe = onSnapshot(q, (snapshot)=> {
             let tempOrders = [];
-            let allNames = [];
             snapshot.forEach((doc) => {
                 const realData = doc.data();
                 tempOrders.push({id: doc.id, ...realData});
                 setOrders(tempOrders);
              });
 
-            
-            
-
-
          });
-
-        
-         
-
 
         return() => unsubscribe();
     }, []);
@@ -40,10 +31,28 @@ const StaffDashboard = () => {
 
 
 
+   async function migrateData() {
+        for (const sandwich of data){
+            const collectionRef = collection(db, 'products');
+            const newProduct = {
+                name: sandwich.name,
+                price: sandwich.price,
+                code: sandwich.code
+            };
+            const docRef = await addDoc(collectionRef, newProduct);
+            console.log("Success - migrate: ", sandwich.name);
+        }
+    }
+
+
+
+
+
 
     return (
         <div>
-            <h1>StaffDashboard</h1>
+            <h1>StaffDashboard</h1>\
+            <button onClick={()=> migrateData()}>Migrate</button>
 
             
             {
@@ -54,7 +63,7 @@ const StaffDashboard = () => {
 
                     return (
                         <div key={order.id} className="order-card">
-                            <h2>Order #{order.id.slice(-3)}</h2>
+                            {/* <h2>Order #{order.id.slice(-3)}</h2>
                             {
                                 productIds.map(productId => {
                                     const foundProduct = data.find(product => product.id == productId);
@@ -65,7 +74,7 @@ const StaffDashboard = () => {
                                 })
 
                                 
-                            }
+                            } */}
 
                             <footer>{order.createdAt?.toDate().toLocaleTimeString([], {
                                 hour: '2-digit',
