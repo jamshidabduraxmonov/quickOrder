@@ -1,4 +1,4 @@
-import {collection, query, onSnapshot} from 'firebase/firestore';
+import {collection, query, onSnapshot, orderBy} from 'firebase/firestore';
 import {useState, useEffect} from 'react';
 import { db } from './firebase.js';
 import data from './products.json'
@@ -12,7 +12,9 @@ const StaffDashboard = () => {
     useEffect(() => {
         const ordersCollection = collection(db, 'orders');
 
-        const unsubscribe = onSnapshot(ordersCollection, (snapshot)=> {
+        const q = query(ordersCollection, orderBy('createdAt', 'desc'));
+
+        const unsubscribe = onSnapshot(q, (snapshot)=> {
             let tempOrders = [];
             let allNames = [];
             snapshot.forEach((doc) => {
