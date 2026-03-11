@@ -7,6 +7,7 @@ import StaffDashboard from './StaffDashboard.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {Menu} from './Menu.jsx';
 
+
 export function ProductCard({ name, onAdd, price, onRemove, image, code, id }) {
 
   const [ count, setCount ] = useState(0);

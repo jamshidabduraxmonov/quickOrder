@@ -1,12 +1,11 @@
 import {collection, query, onSnapshot, orderBy, addDoc} from 'firebase/firestore';
 import {useState, useEffect} from 'react';
 import { db } from './firebase.js';
-import data from './products.json'
 
 
 const StaffDashboard = () => {
     const [orders, setOrders] = useState([]); // No_1 state
-    const [orderNames, setOrderNames] = useState([]); // No_2 State
+    const [data, setData] = useState([]);
     console.log('Total Orders: ', orders);
 
     useEffect(() => {
@@ -28,7 +27,19 @@ const StaffDashboard = () => {
     }, []);
 
 
+    useEffect(() => {
+        const productsCollection = collection(db, 'products');
+        const unsubscribe2 = onSnapshot(productsCollection, (snapshot) => {
+            let tempProducts = [];
+            snapshot.forEach((doc)=> {
+                const realData = doc.data();
+                tempProducts.push({id: doc.id, ...realData});
+                setData(tempProducts);
+            });
+        });
 
+        return() => unsubscribe2();
+    }, [])
 
 
    async function migrateData() {
@@ -63,7 +74,7 @@ const StaffDashboard = () => {
 
                     return (
                         <div key={order.id} className="order-card">
-                            {/* <h2>Order #{order.id.slice(-3)}</h2>
+                            <h2>Order #{order.id.slice(-3)}</h2>
                             {
                                 productIds.map(productId => {
                                     const foundProduct = data.find(product => product.id == productId);
@@ -74,7 +85,7 @@ const StaffDashboard = () => {
                                 })
 
                                 
-                            } */}
+                            }
 
                             <footer>{order.createdAt?.toDate().toLocaleTimeString([], {
                                 hour: '2-digit',
