@@ -42,19 +42,6 @@ const StaffDashboard = () => {
     }, [])
 
 
-   async function migrateData() {
-        for (const sandwich of data){
-            const collectionRef = collection(db, 'products');
-            const newProduct = {
-                name: sandwich.name,
-                price: sandwich.price,
-                code: sandwich.code
-            };
-            const docRef = await addDoc(collectionRef, newProduct);
-            console.log("Success - migrate: ", sandwich.name);
-        }
-    }
-
 
 
 
@@ -63,7 +50,6 @@ const StaffDashboard = () => {
     return (
         <div>
             <h1>StaffDashboard</h1>\
-            <button onClick={()=> migrateData()}>Migrate</button>
 
             
             {
