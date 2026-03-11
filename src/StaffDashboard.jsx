@@ -1,4 +1,4 @@
-import {collection, query, onSnapshot, orderBy, addDoc} from 'firebase/firestore';
+import {collection, query, onSnapshot, orderBy, addDoc, doc, deleteDoc} from 'firebase/firestore';
 import {useState, useEffect} from 'react';
 import { db } from './firebase.js';
 
@@ -18,8 +18,9 @@ const StaffDashboard = () => {
             snapshot.forEach((doc) => {
                 const realData = doc.data();
                 tempOrders.push({id: doc.id, ...realData});
-                setOrders(tempOrders);
              });
+            setOrders(tempOrders);
+
 
          });
 
@@ -42,6 +43,10 @@ const StaffDashboard = () => {
     }, [])
 
 
+    async function handleDelete(productId) {
+        const docRef = doc(db, 'products', productId);
+        await deleteDoc(docRef);
+    }
 
 
 
@@ -49,7 +54,7 @@ const StaffDashboard = () => {
 
     return (
         <div>
-            <h1>StaffDashboard</h1>\
+            <h1>StaffDashboard</h1>
 
             
             {
@@ -65,6 +70,11 @@ const StaffDashboard = () => {
                                 productIds.map(productId => {
                                     const foundProduct = data.find(product => product.id == productId);
                                     const quantity = itemsMap[productId]
+
+                                    if (!foundProduct) {
+                                        return <p key={productId}>[Deleted Item] x {quantity}</p>
+                                    }
+
                                     return(
                                         <p key={productId}>{foundProduct.name} x {quantity}</p>
                                     )
@@ -82,6 +92,34 @@ const StaffDashboard = () => {
                 })
              
             }
+
+
+
+            <div className="product-management">
+                
+                <h2>Product Management</h2>
+
+                {
+                    data.map(sandwich => {
+                        const name = sandwich.name;
+                        const code = sandwich.code;
+                        const price = sandwich.price;
+
+
+                        return(
+
+                            <div key={sandwich.id}>
+                                <p key={name}>{name}</p>
+                                <p key={code}>{code}</p>
+                                <p>{price}</p>
+                                <button>Edit</button>
+                                <button onClick={()=> handleDelete(sandwich.id)}>Remove</button>
+                            </div>
+                            
+                        )
+                    })
+                }
+            </div>
         </div>
     );
 };
