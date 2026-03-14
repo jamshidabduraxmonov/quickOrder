@@ -6,7 +6,10 @@ import { db } from './firebase.js';
 const StaffDashboard = () => {
     const [orders, setOrders] = useState([]); // No_1 state
     const [data, setData] = useState([]);
-    console.log('Total Orders: ', orders);
+
+    const [newProduct, setNewProduct] = useState({name: '', price: '', code: ''});
+
+    // console.log('Total Orders: ', orders);
 
     useEffect(() => {
         const ordersCollection = collection(db, 'orders');
@@ -35,8 +38,10 @@ const StaffDashboard = () => {
             snapshot.forEach((doc)=> {
                 const realData = doc.data();
                 tempProducts.push({id: doc.id, ...realData});
-                setData(tempProducts);
             });
+
+                setData(tempProducts);
+
         });
 
         return() => unsubscribe2();
@@ -48,8 +53,25 @@ const StaffDashboard = () => {
         await deleteDoc(docRef);
     }
 
+    
+    const handleChange = (e) => {
+        
+        const keyName = e.target.name;
+        const val = e.target.value;
 
+        setNewProduct((prev) => ({
+            ...prev,
+            [keyName]: val
+        }));
+    }
 
+   const handleAddProduct = async() => {
+        const collectionRef = collection(db, 'products');
+        const docRef= await addDoc(collectionRef, newProduct);
+        console.log(docRef.id);
+        setNewProduct({ name: '', price: '', code: ''});
+
+    }
 
 
     return (
@@ -93,6 +115,17 @@ const StaffDashboard = () => {
              
             }
 
+
+            <div className="create-new">
+                <h2>Add New Product</h2>
+
+                <input name="name" value={newProduct.name} onChange={handleChange} className="name" type="text" placeholder='Product name' />
+                <input name="price" value={newProduct.price} onChange={handleChange} className="price" type="text" placeholder='Price' />
+                <input name="code" value={newProduct.code} onChange={handleChange} className="code" type="text"  placeholder='Code'/>
+
+                <button onClick={handleAddProduct}>Add New Product</button>
+            
+            </div>
 
 
             <div className="product-management">
