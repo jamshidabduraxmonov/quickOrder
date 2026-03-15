@@ -11,6 +11,8 @@ const StaffDashboard = () => {
 
     const [ imageFile, setImageFile ] = useState(null);
 
+    const [ isUploading, setIsUploading ] = useState(false);
+
     // console.log('Total Orders: ', orders);
 
     useEffect(() => {
@@ -72,6 +74,8 @@ const StaffDashboard = () => {
 
         if(!imageFile) return alert("Please, select an image first!");
 
+        setIsUploading(true);
+
         const formData = new FormData();
         formData.append('file', imageFile);
         formData.append('upload_preset', 'Quick_order');
@@ -98,6 +102,9 @@ const StaffDashboard = () => {
             setNewProduct({ name: '', price: '', code: ''});
             setImageFile(null);
             document.getElementById('fileInput').value = "";
+
+            setIsUploading(false);
+
             alert("Product added successfully!");
         } catch(error) {
             console.error("Upload failed: ", error);
@@ -177,7 +184,9 @@ const StaffDashboard = () => {
                     onChange={handleFileChange}
                 />
 
-                <button onClick={handleAddProduct}>Add New Product</button>
+                <button disabled={isUploading} onClick={handleAddProduct}>
+                    {isUploading ? "Uploading..." : "Add Product"}
+                </button>
             
             </div>
 
