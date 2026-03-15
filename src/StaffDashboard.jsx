@@ -9,6 +9,8 @@ const StaffDashboard = () => {
 
     const [newProduct, setNewProduct] = useState({name: '', price: '', code: ''});
 
+    const [ imageFile, setImageFile ] = useState(null);
+
     // console.log('Total Orders: ', orders);
 
     useEffect(() => {
@@ -66,11 +68,56 @@ const StaffDashboard = () => {
     }
 
    const handleAddProduct = async() => {
-        const collectionRef = collection(db, 'products');
-        const docRef= await addDoc(collectionRef, newProduct);
-        console.log(docRef.id);
-        setNewProduct({ name: '', price: '', code: ''});
+    // Cloudinary logic ////////////////////////////////////////////////
 
+        if(!imageFile) return alert("Please, select an image first!");
+
+        const formData = new FormData();
+        formData.append('file', imageFile);
+        formData.append('upload_preset', 'Quick_order');
+
+        try {
+            // 3. Upload to Cloudinary
+            const resp = await fetch("https://api.cloudinary.com/v1_1/dano4bou5/image/upload", {
+                method: "POST",
+                body: formData
+            });
+            const fileData = await resp.json();
+            console.log("Image Data: ", fileData);
+            const imageUrl = fileData.secure_url; // This is the webLink to my photo!
+            
+            // FireBase/FireStore logic ///////////////////////////////////////
+
+            const collectionRef = collection(db, 'products');
+
+            const docRef= await addDoc(collectionRef,{
+                ...newProduct,
+                image: imageUrl
+            });
+            console.log(docRef.id);
+            setNewProduct({ name: '', price: '', code: ''});
+            setImageFile(null);
+            document.getElementById('fileInput').value = "";
+            alert("Product added successfully!");
+        } catch(error) {
+            console.error("Upload failed: ", error);
+        }
+
+
+
+
+
+
+
+
+    
+
+    }
+
+    const handleFileChange = (e) => {
+        if (e.target.files[0]) {
+            setImageFile(e.target.files[0]);
+        }
     }
 
 
@@ -122,6 +169,13 @@ const StaffDashboard = () => {
                 <input name="name" value={newProduct.name} onChange={handleChange} className="name" type="text" placeholder='Product name' />
                 <input name="price" value={newProduct.price} onChange={handleChange} className="price" type="text" placeholder='Price' />
                 <input name="code" value={newProduct.code} onChange={handleChange} className="code" type="text"  placeholder='Code'/>
+
+                <input
+                    id="fileInput"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
 
                 <button onClick={handleAddProduct}>Add New Product</button>
             
