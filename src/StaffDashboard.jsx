@@ -1,4 +1,4 @@
-import {collection, query, onSnapshot, orderBy, addDoc, doc, deleteDoc} from 'firebase/firestore';
+import {collection, query, onSnapshot, orderBy, addDoc, doc, deleteDoc, updateDoc} from 'firebase/firestore';
 import {useState, useEffect} from 'react';
 import { db } from './firebase.js';
 
@@ -12,6 +12,9 @@ const StaffDashboard = () => {
     const [ imageFile, setImageFile ] = useState(null);
 
     const [ isUploading, setIsUploading ] = useState(false);
+
+    const [ editId, setEditId ] = useState(null);
+    const [ editProduct, setEditProduct ] = useState({name: '', price: '', code: ''});
 
     // console.log('Total Orders: ', orders);
 
@@ -69,6 +72,17 @@ const StaffDashboard = () => {
         }));
     }
 
+    const handleEditChange = (e) => {
+
+        const keyName = e.target.name;
+        const val = e.target.value;
+
+        setEditProduct((prev) => ({
+            ...prev,
+            [keyName]: val
+        }));
+    }
+
    const handleAddProduct = async() => {
     // Cloudinary logic ////////////////////////////////////////////////
 
@@ -110,15 +124,6 @@ const StaffDashboard = () => {
             console.error("Upload failed: ", error);
         }
 
-
-
-
-
-
-
-
-    
-
     }
 
     const handleFileChange = (e) => {
@@ -126,6 +131,22 @@ const StaffDashboard = () => {
             setImageFile(e.target.files[0]);
         }
     }
+
+
+
+
+    const handleEdit = (sandwich) => {
+        setEditId(sandwich.id);
+        setEditProduct(sandwich);
+    }
+
+
+    const handleSave = async() => {
+        const docRef = doc(db, 'products', editId);
+        await updateDoc(docRef, editProduct);
+        setEditId(null);
+    }
+
 
 
     return (
@@ -200,15 +221,35 @@ const StaffDashboard = () => {
                         const name = sandwich.name;
                         const code = sandwich.code;
                         const price = sandwich.price;
+                        const image =  sandwich.image;
 
 
                         return(
 
                             <div key={sandwich.id}>
-                                <p key={name}>{name}</p>
-                                <p key={code}>{code}</p>
-                                <p>{price}</p>
-                                <button>Edit</button>
+                                <img src={image} alt={name}/>
+                                {
+                                    sandwich.id === editId ? (
+                                    <>
+                                        <input name="name" onChange={handleEditChange} value={editProduct.name}/>
+                                        <input name="code" onChange={handleEditChange} value={editProduct.code}/>
+                                        <input name="price" onChange={handleEditChange} value={editProduct.price}/>
+
+                                        <button onClick={handleSave} >Save</button>
+                                    </>
+                                    ) : (
+                                        <>
+                                        <div>
+                                            <p key={name}>{name}</p>
+                                            <p key={code}>{code}</p>
+                                            <p>{price}</p>
+                                        </div>
+                                        <button onClick={()=> handleEdit(sandwich)}>Edit</button>
+                                        </>
+                                        
+                                    )
+                                }
+                               
                                 <button onClick={()=> handleDelete(sandwich.id)}>Remove</button>
                             </div>
                             
