@@ -142,6 +142,12 @@ const StaffDashboard = () => {
 
 
     const handleSave = async() => {
+
+        if(!editProduct.name || !editProduct.code || !editProduct.price ){
+            alert("Please fill all blanks!");
+            return;
+        }
+
         const docRef = doc(db, 'products', editId);
         await updateDoc(docRef, editProduct);
         setEditId(null);
