@@ -148,9 +148,46 @@ const StaffDashboard = () => {
             return;
         }
 
-        const docRef = doc(db, 'products', editId);
-        await updateDoc(docRef, editProduct);
-        setEditId(null);
+        setIsUploading(true);
+        let finalImageUrl = editProduct.image;
+
+        
+            try {
+                if(imageFile !== null) {
+                
+                const formData = new FormData();
+                formData.append('file', imageFile);
+                formData.append('upload_preset', 'Quick_order');
+
+                const resp = await fetch('https://api.cloudinary.com/v1_1/dano4bou5/image/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const fileData = await resp.json();
+                console.log("New Image uploaded!");
+                const imgUrl = fileData.secure_url;
+                finalImageUrl = imgUrl;
+            }
+                
+                const docRef = doc(db, 'products', editId);
+                await updateDoc(docRef, {...editProduct, image: finalImageUrl});
+
+                setEditId(null);
+                setImageFile(null);
+            }catch(error) {
+                console.error(error);
+                alert("Oops! Something went wrong! Please try again!");
+                return;
+            }finally{
+                setIsUploading(false);
+            }
+        
+
+
+
+
+    
     }
 
 
@@ -233,10 +270,10 @@ const StaffDashboard = () => {
                         return(
 
                             <div key={sandwich.id}>
-                                <img src={image} alt={name}/>
                                 {
                                     sandwich.id === editId ? (
                                     <>
+                                        <input type="file" accept="image/*" onChange={handleFileChange} />
                                         <input name="name" onChange={handleEditChange} value={editProduct.name}/>
                                         <input name="code" onChange={handleEditChange} value={editProduct.code}/>
                                         <input name="price" onChange={handleEditChange} value={editProduct.price}/>
@@ -246,6 +283,7 @@ const StaffDashboard = () => {
                                     ) : (
                                         <>
                                         <div>
+                                            <img src={image} alt={name}/>
                                             <p key={name}>{name}</p>
                                             <p key={code}>{code}</p>
                                             <p>{price}</p>
