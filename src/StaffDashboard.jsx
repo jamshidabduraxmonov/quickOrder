@@ -136,6 +136,7 @@ const StaffDashboard = () => {
 
 
     const handleEdit = (sandwich) => {
+        setImageFile(null);
         setEditId(sandwich.id);
         setEditProduct(sandwich);
     }
@@ -149,7 +150,7 @@ const StaffDashboard = () => {
         }
 
         setIsUploading(true);
-        let finalImageUrl = editProduct.image;
+        let finalImageUrl = editProduct.image || '';
 
         
             try {
@@ -169,10 +170,12 @@ const StaffDashboard = () => {
                 const imgUrl = fileData.secure_url;
                 finalImageUrl = imgUrl;
             }
-                
-                const docRef = doc(db, 'products', editId);
-                await updateDoc(docRef, {...editProduct, image: finalImageUrl});
+                if( imageFile && imageFile instanceof File) {
+                    const docRef = doc(db, 'products', editId);
+                    await updateDoc(docRef, {...editProduct, image: finalImageUrl});
 
+                }
+                
                 setEditId(null);
                 setImageFile(null);
             }catch(error) {
@@ -286,9 +289,9 @@ const StaffDashboard = () => {
                                             <img src={image} alt={name}/>
                                             <p key={name}>{name}</p>
                                             <p key={code}>{code}</p>
-                                            <p>{price}</p>
+                                            <p>{price} AED</p>
                                         </div>
-                                        <button onClick={()=> handleEdit(sandwich)}>Edit</button>
+                                        <button disabled={editId !== null} onClick={()=> handleEdit(sandwich)}>Edit</button>
                                         </>
                                         
                                     )
