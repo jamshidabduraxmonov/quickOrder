@@ -31,7 +31,6 @@
   flex-direction: column;
   align-items: center; 
   text-align: center;
-  /* Let's make the ProductCard feel alive */
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -72,16 +71,42 @@ img {
 
 
 .order-card {
-  border: 2px solid #333; /* A clear, dark border */
-  border-radius: 8px;      /* Rounded corners so it looks like a card */
-  padding: 15px;           /* Space inside the card (so text doesn't touch the border) */
-  margin-bottom: 20px;     /* Space between this card and the next one */
-  max-width: 400px;        /* Keeps the cards from being too wide */
-  background-color: #f9f9f9; /* A light background to separate it from the page */
+  border: 2px solid #333; 
+  border-radius: 8px;      
+  padding: 15px;           
+  margin-bottom: 20px;     
+  max-width: 400px;        
+  background-color: #f9f9f9; 
+}
+.order-card h2 {
+  margin-top: 0;           
+  border-bottom: 1px solid #ddd; 
+  padding-bottom: 5px;
 }
 
-.order-card h2 {
-  margin-top: 0;           /* Removes extra space at the top of the ID */
-  border-bottom: 1px solid #ddd; /* A subtle line separating the ID from the items */
-  padding-bottom: 5px;
+.order-controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.orderBtn, .clearBtn {
+    position: relative; 
+    bottom: auto;
+    left: auto;
+    transform: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
 }

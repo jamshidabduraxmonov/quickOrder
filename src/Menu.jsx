@@ -17,5 +17,10 @@ export const Menu = ({sandwiches, addToTotal, removeFromTotal}) => {
           />
           
           ))}
+
+
+
+
+          
     </>)
 }

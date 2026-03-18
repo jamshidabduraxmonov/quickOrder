@@ -86,7 +86,10 @@ export default function MainMenu() {
   }, [])
 
   function addToTotal(price, id) {
-    setTotal(total + price);
+
+    const numericPrice = Number(price);
+
+    setTotal(total + numericPrice);
     setItemCount(itemCount + 1);
     
     // To get the quantity of this code
@@ -99,7 +102,9 @@ export default function MainMenu() {
   }
 
   function removeFromTotal(price, id){
-    setTotal(total - price);
+    const numericPrice = Number(price);
+
+    setTotal(total - numericPrice);
     setItemCount(itemCount - 1);
 
     const currentQty = cartContents[id] || 0;
@@ -166,45 +171,33 @@ useEffect( () => {
     
   
 
-    return(
-
+ return (
   <BrowserRouter>
-  <>
-
-    <div className="product-grid">
-        
-        <Routes>
-          <Route path='/' element={
-            <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} /> 
-          }/>
-        <Route path="/admin" element={
-          <StaffDashboard />
-        }/>
-
-          </Routes> 
-        
-
-
-    </div>
+    <div className="app-container"> 
+      <Routes>
+        <Route path='/' element={
+          <>
       
+            <div className="product-grid">
+              <Menu sandwiches={sandwiches} addToTotal={addToTotal} removeFromTotal={removeFromTotal} />
+            </div>
 
-  {total > 0 && 
-    <div>
-      <button className="orderBtn" onClick={() => setIsPopupOpen(true)}>
-        Order({itemCount}) - ${total}
-      </button>
-      <button className="clearBtn" onClick={() => window.location.reload()}>
-        Clear All
-      </button>
-    </div>
-  }
+            
+            {total > 0 && (
+              <div className="order-controls">
+                <button className="orderBtn" onClick={() => setIsPopupOpen(true)}>
+                  Order({itemCount}) - ${total}
+                </button>
+                <button className="clearBtn" onClick={() => window.location.reload()}>
+                  Clear All
+                </button>
+              </div>
+            )}
 
-  {isPopupOpen === true && 
-    
-      <div className="popup">
-        <div className="popup-box">
-
-          {isConfirmed=== false ? (
+            {isPopupOpen && (
+              <div className="popup">
+                <div className="popup-box">
+                   {isConfirmed=== false ? (
             <>
               <button onClick={()=> setIsPopupOpen(false)}>x</button>
               <h3>List of Products</h3>
@@ -243,20 +236,17 @@ useEffect( () => {
             </>
           
           )}
-            
-        </div>
-        
-      </div>
-      
-      
-  }
+                </div>
+              </div>
+            )}
+          </>
+        }/>
 
-  </>
-
-</BrowserRouter>
-
-
-  )
+        <Route path="/admin" element={<StaffDashboard />} />
+      </Routes>
+    </div>
+  </BrowserRouter>
+);
 
 
 
