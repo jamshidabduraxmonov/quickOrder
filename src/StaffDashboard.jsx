@@ -108,8 +108,13 @@ const StaffDashboard = () => {
 
             const collectionRef = collection(db, 'products');
 
-            const docRef= await addDoc(collectionRef,{
+            const finalData = {
                 ...newProduct,
+                price: Number(newProduct.price)
+            }
+
+            const docRef= await addDoc(collectionRef,{
+                ...finalData,
                 image: imageUrl
             });
             console.log(docRef.id);
@@ -241,7 +246,7 @@ const StaffDashboard = () => {
                 <h2>Add New Product</h2>
 
                 <input name="name" value={newProduct.name} onChange={handleChange} className="name" type="text" placeholder='Product name' />
-                <input name="price" value={newProduct.price} onChange={handleChange} className="price" type="text" placeholder='Price' />
+                <input name="price" value={newProduct.price} onChange={handleChange} className="price" type="number" placeholder='Price' />
                 <input name="code" value={newProduct.code} onChange={handleChange} className="code" type="text"  placeholder='Code'/>
 
                 <input
