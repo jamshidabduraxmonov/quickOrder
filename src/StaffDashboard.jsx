@@ -175,11 +175,15 @@ const StaffDashboard = () => {
                 const imgUrl = fileData.secure_url;
                 finalImageUrl = imgUrl;
             }
-                if( imageFile && imageFile instanceof File) {
-                    const docRef = doc(db, 'products', editId);
-                    await updateDoc(docRef, {...editProduct, image: finalImageUrl});
 
-                }
+                    const docRef = doc(db, 'products', editId);
+                    const finalEditProduct = {
+                        ...editProduct,
+                        price: Number(editProduct.price) 
+                    }
+                    await updateDoc(docRef, {...finalEditProduct, image: finalImageUrl});
+
+                
                 
                 setEditId(null);
                 setImageFile(null);
